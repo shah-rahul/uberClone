@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var showLocationSearchView = false
+    @State private var showLocationSearchView = false 
     var body: some View {
         ZStack(alignment : .top) {
             UberMapViewReprestible()

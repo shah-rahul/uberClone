@@ -11,6 +11,7 @@ import Foundation
 struct UberMapViewReprestible : UIViewRepresentable {
     let mapView = MKMapView()
     let locationMangaer = LocationManager()
+    @EnvironmentObject var viewModel : LocationSearchViewModel
     func makeUIView(context: Context) -> some UIView {
         mapView.isRotateEnabled = false
         mapView.delegate = context.coordinator
@@ -19,6 +20,9 @@ struct UberMapViewReprestible : UIViewRepresentable {
         return mapView
     }
     func updateUIView(_ uiView: UIViewType, context: Context) {
+        if let selectedLocation = viewModel.selectedLocation {
+            print("debug selected location \(selectedLocation)")
+        }
     }
     func makeCoordinator() -> MapCoordinator {
         return MapCoordinator(parent: self)
