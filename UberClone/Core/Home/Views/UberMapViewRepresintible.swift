@@ -22,6 +22,7 @@ struct UberMapViewReprestible : UIViewRepresentable {
     func updateUIView (_ uiView: UIViewType, context: Context) {
         if let coordinate = viewModel.selectedLocationCoordinate {
             context.coordinator.addAndSelectAnnotaiton(withCoodinate: coordinate)
+            context.coordinator.configurePolyline(withDestinationCoordinate: coordinate)
         }
     }
     func makeCoordinator() -> MapCoordinator {
@@ -32,6 +33,7 @@ struct UberMapViewReprestible : UIViewRepresentable {
 extension UberMapViewReprestible  {
     class MapCoordinator : NSObject, MKMapViewDelegate {
         // mark : properties
+        var userLocationCoordinate : CLLocationCoordinate2D?
         let parent : UberMapViewReprestible
     // mark : life cycle
         init(parent: UberMapViewReprestible) {
@@ -40,10 +42,19 @@ extension UberMapViewReprestible  {
         }
     // mark : mapview delegate
         func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+            self.userLocationCoordinate = userLocation.coordinate
             let region = MKCoordinateRegion(
                 center : CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude),
                 span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
             parent.mapView.setRegion(region, animated: true)
+            
+            
+        }
+        func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer{
+           let polyLine =  MKPolylineRenderer(overlay: overlay)
+            polyLine.strokeColor = .black
+            polyLine.lineWidth = 6
+            return polyLine
         }
     // mark : helpers
         func addAndSelectAnnotaiton(withCoodinate coordinate : CLLocationCoordinate2D) {
@@ -53,6 +64,37 @@ extension UberMapViewReprestible  {
             parent.mapView.addAnnotation(anno)
             parent.mapView.selectAnnotation(anno, animated: true)
             parent.mapView.showAnnotations(parent.mapView.annotations, animated: true)
+        }
+    // MARK : polyliner builder
+        
+        func configurePolyline(withDestinationCoordinate coordinate : CLLocationCoordinate2D) {
+            guard let userLocationCoordinate = self.userLocationCoordinate else {return}
+            getDestinationRoute(from: userLocationCoordinate, to: coordinate) {
+                route in
+                self.parent.mapView.addOverlay(route.polyline)
+                
+                
+            }
+        }
+        
+        
+    // mark : route handler
+        func getDestinationRoute(from userLocation: CLLocationCoordinate2D, to destinationCoordinate : CLLocationCoordinate2D, completion: @escaping(MKRoute)-> Void) {
+            let userPlacemark = MKPlacemark(coordinate: userLocation)
+            let destinationPlacemark = MKPlacemark(coordinate: destinationCoordinate)
+            let request = MKDirections.Request()
+            request.source = MKMapItem(placemark: userPlacemark)
+            request.destination = MKMapItem(placemark: destinationPlacemark)
+            let directions = MKDirections(request: request)
+            directions.calculate {
+                response, error in
+                if let error =  error {
+                    print("DEBUG: falied to get coodintes : \(error.localizedDescription)")
+                    return
+                }
+                guard let route = response?.routes.first else {return}
+                completion(route)
+            }
         }
     }
 }
