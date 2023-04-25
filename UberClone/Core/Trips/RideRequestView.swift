@@ -13,13 +13,13 @@ struct RideRequestView: View {
             Capsule()
                 .foregroundColor(Color(.systemGray5))
                 .frame(width: 48, height: 6)
+                .padding(.top, 10)
             // trip info view
             HStack {
                 //listview
                 VStack {
                     Circle()
                         .fill(Color(.systemGray3))
-                    
                         .frame(width: 8, height: 8)
                     Rectangle()
                         .fill(Color(.systemGray3))
@@ -107,8 +107,7 @@ struct RideRequestView: View {
                     
             }
              
-        }
-    }
+        }.padding(.bottom,14).background(.white).cornerRadius(20)    }
 }
 
 struct RideRequestView_Previews: PreviewProvider {
