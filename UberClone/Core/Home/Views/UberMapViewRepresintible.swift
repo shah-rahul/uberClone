@@ -19,9 +19,9 @@ struct UberMapViewReprestible : UIViewRepresentable {
         mapView.userTrackingMode = .follow
         return mapView
     }
-    func updateUIView(_ uiView: UIViewType, context: Context) {
-        if let selectedLocation = viewModel.selectedLocation {
-            print("debug selected location \(selectedLocation)")
+    func updateUIView (_ uiView: UIViewType, context: Context) {
+        if let coordinate = viewModel.selectedLocationCoordinate {
+            print("debug selected location \(coordinate)")
         }
     }
     func makeCoordinator() -> MapCoordinator {
