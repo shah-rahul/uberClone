@@ -37,7 +37,7 @@ struct MapViewActionButton: View {
         case .searching:
             mapState  = .noInput
             print("DEBUG : SEARCHING")
-            viewModel.selectedLocationCoordinate = nil
+            viewModel.selectedUberLocation = nil
         }
     }
     

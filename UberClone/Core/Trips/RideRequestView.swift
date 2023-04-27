@@ -33,14 +33,16 @@ struct RideRequestView: View {
                 VStack (alignment: .leading, spacing: 24) {
                     HStack {Text("Current Location").font(.system(size: 16, weight:  .semibold)).foregroundColor(.gray)
                         Spacer()
-                        Text("1:30 PM").font(.system(size:14, weight: .semibold)).foregroundColor(.gray)
+                        Text(locationViewModel.pickUpTime ?? " ").font(.system(size:14, weight: .semibold)).foregroundColor(.gray)
                         
                     }
                     .padding(.bottom, 10)
-                    HStack {Text("Starbhakts").font(.system(size: 16, weight: .semibold)).foregroundColor(.black)
-                        Spacer()
-                        Text("1:45 PM").font(.system(size:14, weight: .semibold)).foregroundColor(.black)
-                        
+                    HStack {
+                        if let location = locationViewModel.selectedUberLocation {
+                            Text(location.title).font(.system(size: 16, weight: .semibold)).foregroundColor(.black)
+                            Spacer()
+                            Text(locationViewModel.dropOffTime ?? " ").font(.system(size:14, weight: .semibold)).foregroundColor(.black)
+                        }
                     }
                 }.padding(.leading, 8)
                 
