@@ -10,7 +10,7 @@ import Foundation
 
 struct UberMapViewReprestible : UIViewRepresentable {
     let mapView = MKMapView()
-    let locationMangaer = LocationManager()
+    let locationMangaer = LocationManager.shared
     @Binding var mapState : MapViewState
     @EnvironmentObject var viewModel : LocationSearchViewModel
     func makeUIView(context: Context) -> some UIView {
