@@ -10,5 +10,6 @@ import Foundation
 enum MapViewState {
     case noInput
     case locationSelected
-    case searching  
+    case searching
+    case polyLineAdded
 }

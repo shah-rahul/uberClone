@@ -33,15 +33,15 @@ struct RideRequestView: View {
                 VStack (alignment: .leading, spacing: 24) {
                     HStack {Text("Current Location").font(.system(size: 16, weight:  .semibold)).foregroundColor(.gray)
                         Spacer()
-                        Text(locationViewModel.pickUpTime ?? " ").font(.system(size:14, weight: .semibold)).foregroundColor(.gray)
+                        Text(locationViewModel.pickUpTime ?? " ").font(.system(size:14, weight: .semibold)).foregroundColor(Color.theme.primaryTextColor)
                         
                     }
                     .padding(.bottom, 10)
                     HStack {
                         if let location = locationViewModel.selectedUberLocation {
-                            Text(location.title).font(.system(size: 16, weight: .semibold)).foregroundColor(.black)
+                            Text(location.title).font(.system(size: 16, weight: .semibold)).foregroundColor(Color.theme.primaryTextColor)
                             Spacer()
-                            Text(locationViewModel.dropOffTime ?? " ").font(.system(size:14, weight: .semibold)).foregroundColor(.black)
+                            Text(locationViewModel.dropOffTime ?? " ").font(.system(size:14, weight: .semibold)).foregroundColor(Color.theme.primaryTextColor)
                         }
                     }
                 }.padding(.leading, 8)
@@ -66,8 +66,8 @@ struct RideRequestView: View {
                                 .resizable()
                                 .scaledToFit()
                             VStack(alignment: .leading ,  spacing : 4){
-                                Text(type.description).font(.system(size:14, weight: .semibold)).foregroundColor(type == selectedRideType ? .white : .black)
-                                Text("₹ \(locationViewModel.computeRidePrice(forType: type).toCurrency())").font(.system(size:14, weight: .semibold)).foregroundColor(type == selectedRideType ? .white : .black)
+                                Text(type.description).font(.system(size:14, weight: .semibold)).foregroundColor(type == selectedRideType ? .white : Color.theme.primaryTextColor)
+                                Text("₹ \(locationViewModel.computeRidePrice(forType: type).toCurrency())").font(.system(size:14, weight: .semibold)).foregroundColor(type == selectedRideType ? .white : Color.theme.primaryTextColor)
                             }.padding(16)
                                 
                            
@@ -76,6 +76,8 @@ struct RideRequestView: View {
                         .frame(width: 112, height: 140)
                      
                         .background(Color(type == selectedRideType ? .systemBlue : .systemGroupedBackground))
+                        .background (type == selectedRideType ? .blue :
+                        Color.theme.secondaryBackgroudColor)
                         .scaleEffect(type == selectedRideType ? 1.2 : 1.0)
                         .cornerRadius(10)
                         .onTapGesture {
@@ -104,7 +106,7 @@ struct RideRequestView: View {
                     .imageScale(.medium)
                     .padding()
             }.frame(height: 50)
-                .background(Color(.systemGroupedBackground))
+                .background(Color.theme.secondaryBackgroudColor)
                 .cornerRadius(10)
                 .padding(.horizontal)
             Divider()
@@ -121,7 +123,7 @@ struct RideRequestView: View {
                     
             }
              
-        }.padding(.bottom,14).background(.white).cornerRadius(20)    }
+        }.padding(.bottom,14).background(Color.theme.backgroundColor).cornerRadius(20)    }
 }
 
 struct RideRequestView_Previews: PreviewProvider {
